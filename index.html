@@ -175,10 +175,10 @@ const OK_THRESHOLD_BYTES = 64*1024;
 // Получаем данные IP, ASN, провайдера и флаг
 async function fetchIPInfo() {
   try {
-    const res = await fetch("https://ipapi.co/json/");
+    const res = await fetch("https://ipwhois.app/json/");
     const data = await res.json();
     info.innerHTML = `
-      <img src="${data.country_flag}" width="20" style="vertical-align:middle"> 
+      <img src="https://flagcdn.com/16x12/${data.country_code.toLowerCase()}.png" width="20" style="vertical-align:middle"> 
       ${data.city || '-'}, ${data.region || '-'}<br>
       IPv4: ${data.ip || '-'}<br>
       IPv6: ${data.ipv6 || '-'}<br>
@@ -269,5 +269,6 @@ fetchIPInfo();
 
 </body>
 </html>
+
 
 

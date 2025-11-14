@@ -234,7 +234,14 @@ async function fetchIPInfo() {
     } catch(e){ ipv6 = '-'; }
 
     const flagUrl = data.country_code ? `https://flagcdn.com/${data.country_code.toLowerCase()}.svg` : '';
-    const asnLink = data.asn ? `https://bgp.he.net/AS${data.asn}` : '#';
+
+    // --- Обработка ASN: оставляем только цифры ---
+    let asnNumber = '-';
+    if(data.asn) {
+      const match = data.asn.match(/\d+/); // ищем числа в строке
+      if(match) asnNumber = match[0];
+    }
+    const asnLink = asnNumber !== '-' ? `https://bgp.he.net/AS${asnNumber}` : '#';
 
     info.innerHTML = `
       <div class="info-row">
@@ -242,17 +249,16 @@ async function fetchIPInfo() {
         ${data.city || '-'}, ${data.region || '-'}
       </div>
       <div class="info-row">
-        <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" class="icon" alt="IPv4"> IPv4: ${data.ip || '-'}
+        IPv4: ${data.ip || '-'}
       </div>
       <div class="info-row">
-        <img src="https://cdn-icons-png.flaticon.com/512/25/25695.png" class="icon" alt="IPv6"> IPv6: ${ipv6}
+        IPv6: ${ipv6}
       </div>
       <div class="info-row">
-        <img src="https://cdn-icons-png.flaticon.com/512/2838/2838835.png" class="icon" alt="Provider"> Провайдер: ${data.org || '-'}
+        Провайдер: ${data.org || '-'}
       </div>
       <div class="info-row">
-        <img src="https://cdn-icons-png.flaticon.com/512/2919/2919600.png" class="icon" alt="ASN">
-        ASN: ${data.asn ? `<a href="${asnLink}" target="_blank">AS${data.asn}</a>` : '-'}
+        ASN: ${asnNumber !== '-' ? `<a href="${asnLink}" target="_blank">AS${asnNumber}</a>` : '-'}
       </div>
     `;
   } catch(e) {
@@ -343,6 +349,7 @@ fetchIPInfo();
 
 </body>
 </html>
+
 
 
 

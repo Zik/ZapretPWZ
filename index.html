@@ -12,12 +12,23 @@
     padding: 20px;
     background: #f5f7fa;
     color: #333;
+    position: relative;
   }
 
   h1 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color: #ff008b;
+  }
+
+  #info {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    text-align: right;
+    font-size: 0.9em;
+    line-height: 1.3;
+    color: #555;
   }
 
   .input-group {
@@ -55,7 +66,6 @@
   }
 
   #status {
-    display: block;
     text-align: center;
     font-weight: bold;
     margin: 10px 0;
@@ -103,15 +113,33 @@
     word-break: break-word;
   }
 
+  #footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #555;
+  }
+
+  #footer a {
+    color: #ff008b;
+    text-decoration: none;
+  }
+
+  #footer a:hover {
+    text-decoration: underline;
+  }
+
   @media (max-width: 600px) {
     input[type=text] { width: 100%; }
     th, td { padding: 6px; font-size: 0.85em; }
+    #info { position: static; text-align: left; margin-bottom: 10px; }
   }
 </style>
 </head>
 <body>
 
 <h1>Custom DPI Checker</h1>
+<div id="info">Загрузка данных...</div>
 
 <div class="input-group">
   <input type="text" id="url" placeholder="https://example.com">
@@ -130,15 +158,39 @@
 
 <pre id="log"></pre>
 
+<div id="footer">
+  💡 <a href="https://github.com/Zik/ZapretPWZ" target="_blank">Инструкция по настройке NFQWS</a>
+</div>
+
 <script>
 const startBtn = document.getElementById("start");
 const urlInput = document.getElementById("url");
 const log = document.getElementById("log");
 const status = document.getElementById("status");
 const results = document.getElementById("results");
+const info = document.getElementById("info");
 const TIMEOUT_MS = 5000;
 const OK_THRESHOLD_BYTES = 64*1024;
 
+// Получаем данные IP, ASN, провайдера и флаг
+async function fetchIPInfo() {
+  try {
+    const res = await fetch("https://ipapi.co/json/");
+    const data = await res.json();
+    info.innerHTML = `
+      <img src="${data.country_flag}" width="20" style="vertical-align:middle"> 
+      ${data.city || '-'}, ${data.region || '-'}<br>
+      IPv4: ${data.ip || '-'}<br>
+      IPv6: ${data.ipv6 || '-'}<br>
+      Провайдер: ${data.org || '-'}<br>
+      ASN: ${data.asn || '-'}
+    `;
+  } catch (e) {
+    info.textContent = "Не удалось загрузить IP данные";
+  }
+}
+
+// DPI Checker
 function logPush(msg) {
   log.textContent += msg + "\n";
   log.scrollTop = log.scrollHeight;
@@ -152,7 +204,6 @@ async function checkDPI(url) {
   status.textContent = "Checking ⏰";
   startBtn.disabled = true;
 
-  // Очистим предыдущие результаты
   while(results.rows.length > 1) results.deleteRow(1);
   log.textContent = "";
 
@@ -211,6 +262,9 @@ startBtn.onclick = () => {
   if(url) checkDPI(url);
   else alert("Введите корректный URL");
 };
+
+// Загружаем IP/ASN инфо при старте
+fetchIPInfo();
 </script>
 
 </body>

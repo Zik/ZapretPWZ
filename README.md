@@ -1,4 +1,4 @@
-# ZapretPWZ
+# ZapretPWZ                       [DPI CHECKER](https://zik.github.io/ZapretPWZ/)
 ### Что это?
 
 `nfqws` - утилита для модификации TCP соединения на уровне пакетов, работает через обработчик очереди NFQUEUE и raw сокеты.

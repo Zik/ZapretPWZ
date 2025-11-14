@@ -1,19 +1,133 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <title>Custom DPI Checker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
-  input, button { font-size: 1em; padding: 8px; margin: 5px; }
-  #log { background: #222; color: #eee; padding: 10px; max-height: 300px; overflow-y: auto; font-family: monospace; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f5f7fa;
+    color: #333;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ff008b;
+  }
+
+  .input-group {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  input[type=text] {
+    width: 60%;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 6px;
+    background: #ff008b;
+    color: #fff;
+    cursor: pointer;
+    transition: background .3s, transform .1s;
+  }
+
+  button:hover {
+    background: #d40074;
+    transform: translateY(-2px);
+  }
+
+  button:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+  }
+
+  #status {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+
+  th {
+    background: #ff008b;
+    color: #fff;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  .ok { color: #28a745; font-weight: 500; }
+  .bad { color: #dc3545; font-weight: 500; }
+
+  #log {
+    background: #1a1a1a;
+    color: #d4d4d4;
+    padding: 15px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.9em;
+    max-height: 250px;
+    overflow-y: auto;
+    margin-top: 20px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  @media (max-width: 600px) {
+    input[type=text] { width: 100%; }
+    th, td { padding: 6px; font-size: 0.85em; }
+  }
 </style>
 </head>
 <body>
-<h2>Custom DPI Checker</h2>
-<input type="text" id="url" placeholder="https://example.com">
-<button id="start">Check</button>
-<div id="status"></div>
+
+<h1>Custom DPI Checker</h1>
+
+<div class="input-group">
+  <input type="text" id="url" placeholder="https://example.com">
+  <button id="start">Check</button>
+</div>
+
+<div id="status">Ready ⚡</div>
+
+<table id="results">
+  <tr>
+    <th>#</th>
+    <th>URL</th>
+    <th>Status</th>
+  </tr>
+</table>
+
 <pre id="log"></pre>
 
 <script>
@@ -21,6 +135,7 @@ const startBtn = document.getElementById("start");
 const urlInput = document.getElementById("url");
 const log = document.getElementById("log");
 const status = document.getElementById("status");
+const results = document.getElementById("results");
 const TIMEOUT_MS = 5000;
 const OK_THRESHOLD_BYTES = 64*1024;
 
@@ -34,8 +149,22 @@ function getUniqueUrl(url) {
 }
 
 async function checkDPI(url) {
-  status.textContent = "Checking...";
+  status.textContent = "Checking ⏰";
+  startBtn.disabled = true;
+
+  // Очистим предыдущие результаты
+  while(results.rows.length > 1) results.deleteRow(1);
   log.textContent = "";
+
+  const row = results.insertRow();
+  const numCell = row.insertCell();
+  const urlCell = row.insertCell();
+  const statusCell = row.insertCell();
+
+  numCell.textContent = 1;
+  urlCell.textContent = url;
+  statusCell.textContent = "Checking...";
+
   const ctrl = new AbortController();
   const timeoutId = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
 
@@ -53,33 +182,38 @@ async function checkDPI(url) {
         ok = true;
         await reader.cancel();
         logPush("Early complete: Not detected ✅");
-        status.textContent = "Not detected ✅";
+        statusCell.textContent = "Not detected ✅";
+        statusCell.className = "ok";
         clearTimeout(timeoutId);
-        return;
+        break;
       }
     }
 
     if(!ok) {
       logPush("Stream complete but data too small: Possibly detected ⚠️");
-      status.textContent = "Possibly detected ⚠️";
+      statusCell.textContent = "Possibly detected ⚠️";
+      statusCell.className = "bad";
     }
+
   } catch(e) {
     clearTimeout(timeoutId);
-    if(e.name === "AbortError") {
-      logPush("Timeout: Detected❗️");
-      status.textContent = "Detected❗️";
-    } else {
-      logPush("Error: " + e);
-      status.textContent = "Error ⚠️";
-    }
+    logPush("Error: " + e);
+    statusCell.textContent = "Detected❗️";
+    statusCell.className = "bad";
   }
+
+  status.textContent = "Ready ⚡";
+  startBtn.disabled = false;
 }
 
 startBtn.onclick = () => {
   const url = urlInput.value.trim();
   if(url) checkDPI(url);
-  else alert("Enter a valid URL");
+  else alert("Введите корректный URL");
 };
 </script>
+
 </body>
 </html>
+
+

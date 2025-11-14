@@ -163,7 +163,8 @@
 
   <!-- --- Панель с IP, ASN, провайдером и флагом --- -->
   <div class="panel" id="info">Загрузка данных...</div>
-
+  
+  <!-- --- Копируем ссылку кликом --- -->
   <style>
   .example-link-box {
     display: inline-block;
@@ -185,16 +186,17 @@
   <div class="panel" id="instruction">
     <b>Как работает DPI Checker:</b><br>
     1. Введите любой URL в поле. (Файл или ресурс должен быть хотя бы ~16–20 KB, лучше ≥64 KB)<br>
-    Пример: вставьте 
+    <i>Пример: вставьте 
   <span class="example-link-box" data-url="https://oracle.sfx.ovh/10M.bin">
     https://oracle.sfx.ovh/10M.bin
   </span>
-  в строку поиска и нажмите Проверить.<br>
+  в строку поиска и нажмите Проверить.</i><br>
     2. Скрипт делает fetch и читает поток данных.<br>
     3. Если удалось скачать хотя бы 64 KB — DPI не вмешивается (сайт работает без блокировки).<br>
     4. Если данные меньше или fetch прерывается по таймауту — есть вероятность блокировки DPI.
   </div>
 
+  <!-- --- Копируем ссылку кликом  --- -->
   <script>
   document.addEventListener('click', e => {
     const el = e.target.closest('.example-link-box');
@@ -398,6 +400,7 @@ fetchIPInfo();
 
 </body>
 </html>
+
 
 
 

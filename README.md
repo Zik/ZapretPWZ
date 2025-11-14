@@ -10,6 +10,48 @@
 > 
 > Автор не несёт ответственности за порчу оборудования и программного обеспечения, проблемы с доступом и потенцией.
 > Подразумевается, что вы понимаете, что вы делаете.
+---
+## Список проверенных устройств Keenetic/Netcraze. Так же список на исходнике [Исходник](https://github.com/Anonym-tsk/nfqws-keenetic/discussions/1).
+<details>
+  <summary>Список (раскрывается)</summary>
+   
+  - Zyxel Keenetic II
+  - Zyxel Keenetic III
+  - Zyxel Keenetic Giga II
+  - Zyxel Keenetic Giga III
+  - Zyxel Keenetic Extra
+  - Zyxel Keenetic Extra II
+  - Zyxel Keenetic Ultra
+  - Zyxel Keenetic Ultra II
+  - Keenetic Giga (KN-1010)
+  - Keenetic Giga (KN-1011)
+  - Keenetic Giga (KN-1012)
+  - Keenetic 4G (KN-1212)
+  - Keenetic Omni (KN-1410)
+  - Keenetic Extra (KN-1710)
+  - Keenetic Extra (KN-1711)
+  - Keenetic Extra (KN-1713)
+  - Keenetic Ultra (KN-1810)
+  - Keenetic Ultra (KN-1811)
+  - Keenetic Viva (KN-1910)
+  - Keenetic Viva (KN-1912)
+  - Keenetic Viva (KN-1913)
+  - Keenetic DSL (KN-2010)
+  - Keenetic Launcher DSL (KN-2012)
+  - Keenetic Duo (KN-2110)
+  - Keenetic Skipper DSL (KN-2112)
+  - Keenetic Runner 4G (KN-2211)
+  - Keenetic Hero 4G+ (KN-2311)
+  - Keenetic Giga SE (KN-2410)
+  - Keenetic Giant (KN-2610)
+  - Keenetic Peak (KN-2710)
+  - Keenetic Hopper DSL (KN-3610)
+  - Keenetic Hopper (KN-3810)
+  - Keenetic Hopper (KN-3811)
+  - Keenetic Hopper SE (KN-3812)
+</details>
+
+---
 
 ### 1. Подготовка 
 1.1 Игнорируем предложенные провайдером адреса DNS-сервера. Для этого в интерфейсе роутера отметьте пункты ["игнорировать DNS от провайдера"](https://help.keenetic.com/hc/ru/articles/360008609399) в настройках IPv4 и IPv6. И ставим свои (на выбор полно в инете: "ок, гугл, проверенные днс сервера"). Желательно использовать [настроить использование DoT/DoH](https://help.keenetic.com/hc/ru/articles/360007687159). А так же в разделе "Интернет-фильтры" отключить все сторонние фильтры (NextDNS, SkyDNS, Яндекс DNS и другие).

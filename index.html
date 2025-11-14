@@ -31,6 +31,11 @@
     color: #555;
   }
 
+  #info img {
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
   .input-group {
     text-align: center;
     margin-bottom: 20px;
@@ -175,13 +180,22 @@ const OK_THRESHOLD_BYTES = 64*1024;
 // Получаем данные IP, ASN, провайдера и флаг
 async function fetchIPInfo() {
   try {
+    // IPv4 + провайдер + ASN
     const res = await fetch("https://ipwhois.app/json/");
     const data = await res.json();
+    // IPv6 через отдельный сервис
+    let ipv6 = '-';
+    try {
+      const res6 = await fetch("https://api64.ipify.org?format=json");
+      const data6 = await res6.json();
+      ipv6 = data6.ip || '-';
+    } catch(e){ ipv6 = '-'; }
+
     info.innerHTML = `
-      <img src="https://flagcdn.com/16x12/${data.country_code.toLowerCase()}.png" width="20" style="vertical-align:middle"> 
+      <img src="https://flagcdn.com/${data.country_code.toLowerCase()}.svg" width="20" onerror="this.style.display='none'">
       ${data.city || '-'}, ${data.region || '-'}<br>
       IPv4: ${data.ip || '-'}<br>
-      IPv6: ${data.ipv6 || '-'}<br>
+      IPv6: ${ipv6}<br>
       Провайдер: ${data.org || '-'}<br>
       ASN: ${data.asn || '-'}
     `;
@@ -269,6 +283,8 @@ fetchIPInfo();
 
 </body>
 </html>
+
+
 
 
 

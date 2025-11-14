@@ -164,18 +164,53 @@
   <!-- --- Панель с IP, ASN, провайдером и флагом --- -->
   <div class="panel" id="info">Загрузка данных...</div>
 
+  <style>
+  .example-link-box {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: #f0f0f0;
+    cursor: pointer;
+    color: #0066cc;
+    font-weight: 600;
+    user-select: none;
+    transition: background .2s;
+  }
+  .example-link-box:hover {
+    background: #e3e3e3;
+  }
+</style>
+
   <!-- --- Панель с инструкцией работы DPI --- -->
   <div class="panel" id="instruction">
     <b>Как работает DPI Checker:</b><br>
     1. Введите любой URL в поле. (Файл или ресурс должен быть хотя бы ~16–20 KB, лучше ≥64 KB)<br>
-    Пример: вставьте <span class="copiable-link" data-url="https://oracle.sfx.ovh/10M.bin">
-  https://oracle.sfx.ovh/10M.bin
-</span> в строку поиска и нажмите Проверить<br>
+    Пример: вставьте 
+  <span class="example-link-box" data-url="https://oracle.sfx.ovh/10M.bin">
+    https://oracle.sfx.ovh/10M.bin
+  </span>
+  в строку поиска и нажмите Проверить.<br>
     2. Скрипт делает fetch и читает поток данных.<br>
     3. Если удалось скачать хотя бы 64 KB — DPI не вмешивается (сайт работает без блокировки).<br>
     4. Если данные меньше или fetch прерывается по таймауту — есть вероятность блокировки DPI.
   </div>
 
+  <script>
+  document.addEventListener('click', e => {
+    const el = e.target.closest('.example-link-box');
+    if (!el) return;
+    const url = el.dataset.url;
+
+    navigator.clipboard.writeText(url).then(() => {
+      el.style.background = '#d1ffd1';
+      el.innerText = 'Скопировано!';
+      setTimeout(() => {
+        el.style.background = '';
+        el.innerText = url;
+      }, 1200);
+    });
+  });
+</script>
 </div>
 
 <!-- =================== Заголовок =================== -->
@@ -363,6 +398,7 @@ fetchIPInfo();
 
 </body>
 </html>
+
 
 
 

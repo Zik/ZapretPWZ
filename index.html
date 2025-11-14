@@ -244,23 +244,28 @@ async function fetchIPInfo() {
     const asnLink = asnNumber !== '-' ? `https://bgp.he.net/AS${asnNumber}` : '#';
 
     info.innerHTML = `
-      <div class="info-row">
-        ${flagUrl ? `<img src="${flagUrl}" onerror="this.style.display='none'">` : ''}
-        ${data.city || '-'}, ${data.region || '-'}
-      </div>
-      <div class="info-row">
-        IPv4: ${data.ip || '-'}
-      </div>
-      <div class="info-row">
-        IPv6: ${ipv6}
-      </div>
-      <div class="info-row">
-        Провайдер: ${data.org || '-'}
-      </div>
-      <div class="info-row">
-        ASN: ${asnNumber !== '-' ? `<a href="${asnLink}" target="_blank">AS${asnNumber}</a>` : '-'}
-      </div>
-    `;
+  <div class="info-row">
+    ${flagUrl ? `<img src="${flagUrl}" alt="flag" style="width:20px; vertical-align:middle; margin-right:5px;">` : ''}
+    ${data.city || '-'}, ${data.region || '-'}
+  </div>
+  <div class="info-row">
+    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/72x72/1f4f6.png" alt="IPv4" style="width:16px; margin-right:5px;">
+    IPv4: ${data.ip || '-'}
+  </div>
+  <div class="info-row">
+    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/72x72/1f4f6.png" alt="IPv6" style="width:16px; margin-right:5px;">
+    IPv6: ${ipv6}
+  </div>
+  <div class="info-row">
+    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/72x72/1f4bb.png" alt="ISP" style="width:16px; margin-right:5px;">
+    Провайдер: ${data.org || '-'}
+  </div>
+  <div class="info-row">
+    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/72x72/1f4f0.png" alt="ASN" style="width:16px; margin-right:5px;">
+    ASN: ${asnNumber !== '-' ? `<a href="${asnLink}" target="_blank">AS${asnNumber}</a>` : '-'}
+  </div>
+`;
+
   } catch(e) {
     info.textContent = "Не удалось загрузить IP данные";
   }
@@ -349,6 +354,7 @@ fetchIPInfo();
 
 </body>
 </html>
+
 
 
 

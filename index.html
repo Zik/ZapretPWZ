@@ -60,20 +60,14 @@
 
   /* --- Блок ввода URL --- */
     .input-group input[type=text] {
-    width: 100%; /* или оставь 60%, как у тебя */
+    width: 100%;
+    max-width: 600px; /* <-- не шире панели */
     padding: 10px;
     font-size: 1em;
     border: 1px solid #ccc;
     border-radius: 6px;
     margin-bottom: 10px; /* <-- добавляем отступ снизу */
-  }
-
-  input[type=text] {
-    width: 60%;
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    box-sizing: border-box; /* фикс на вылазание */
   }
 
   button {
@@ -155,7 +149,7 @@
 
   /* --- Мобильная адаптация --- */
   @media (max-width: 600px) {
-    input[type=text] { width: 95%; }
+    input[type=text] { width: 100%; }
     th, td { padding: 6px; font-size: 0.85em; }
     .panel { width: 90%; font-size: 0.85em; padding: 10px 15px; }
   }
@@ -366,6 +360,7 @@ fetchIPInfo();
 
 </body>
 </html>
+
 
 
 

@@ -15,20 +15,29 @@
     text-align: center;
   }
 
-  .ip-panel {
+  .top-panels {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .panel {
     display: inline-block;
     text-align: left;
     background: #ff008b;
     color: #fff;
     padding: 15px 25px;
     border-radius: 12px;
-    margin-bottom: 15px;
     min-width: 280px;
+    max-width: 300px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     font-size: 0.9em;
+    line-height: 1.4;
   }
 
-  .ip-panel img {
+  .panel img {
     vertical-align: middle;
     margin-right: 5px;
     width: 20px;
@@ -140,13 +149,22 @@
   @media (max-width: 600px) {
     input[type=text] { width: 100%; }
     th, td { padding: 6px; font-size: 0.85em; }
-    .ip-panel { width: 90%; font-size: 0.85em; padding: 10px 15px; }
+    .panel { width: 90%; font-size: 0.85em; padding: 10px 15px; }
   }
 </style>
 </head>
 <body>
 
-<div class="ip-panel" id="info">Загрузка данных...</div>
+<div class="top-panels">
+  <div class="panel" id="info">Загрузка данных...</div>
+  <div class="panel" id="instruction">
+    <b>Как работает DPI Checker:</b><br>
+    1. Введите любой URL в поле.<br>
+    2. Скрипт делает fetch и читает поток данных.<br>
+    3. Если удалось скачать хотя бы 64 KB — DPI не вмешивается.<br>
+    4. Если данные меньше или fetch прерывается по таймауту — есть вероятность блокировки DPI.
+  </div>
+</div>
 
 <h1>Custom DPI Checker</h1>
 
@@ -286,6 +304,8 @@ fetchIPInfo();
 
 </body>
 </html>
+
+
 
 
 

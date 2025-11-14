@@ -1,4 +1,10 @@
 # ZapretPWZ
+### Что это?
+
+`nfqws` - утилита для модификации TCP соединения на уровне пакетов, работает через обработчик очереди NFQUEUE и raw сокеты.
+
+Почитать подробнее можно на [странице авторов](https://github.com/bol-van/zapret) (ищите по ключевому слову `nfqws`).
+
 Полная инструкция по настройке nfqws-keenetic от [Anonym-tsk](https://github.com/Anonym-tsk/nfqws-keenetic) на Keenetic (Netcraze)
 > [!IMPORTANT]
 > Данный материал подготовлен в научно-технических целях.

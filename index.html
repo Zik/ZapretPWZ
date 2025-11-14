@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Custom DPI Checker</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+  input, button { font-size: 1em; padding: 8px; margin: 5px; }
+  #log { background: #222; color: #eee; padding: 10px; max-height: 300px; overflow-y: auto; font-family: monospace; }
+</style>
+</head>
+<body>
+<h2>Custom DPI Checker</h2>
+<input type="text" id="url" placeholder="https://example.com">
+<button id="start">Check</button>
+<div id="status"></div>
+<pre id="log"></pre>
+
+<script>
+const startBtn = document.getElementById("start");
+const urlInput = document.getElementById("url");
+const log = document.getElementById("log");
+const status = document.getElementById("status");
+const TIMEOUT_MS = 5000;
+const OK_THRESHOLD_BYTES = 64*1024;
+
+function logPush(msg) {
+  log.textContent += msg + "\n";
+  log.scrollTop = log.scrollHeight;
+}
+
+function getUniqueUrl(url) {
+  return url.includes('?') ? `${url}&t=${Math.random()}` : `${url}?t=${Math.random()}`;
+}
+
+async function checkDPI(url) {
+  status.textContent = "Checking...";
+  log.textContent = "";
+  const ctrl = new AbortController();
+  const timeoutId = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+
+  try {
+    const r = await fetch(getUniqueUrl(url), { method:"GET", cache:"no-store", signal: ctrl.signal, redirect:"manual" });
+    const reader = r.body.getReader();
+    let received = 0, ok = false;
+
+    while(true) {
+      const {done, value} = await reader.read();
+      if(done) break;
+      received += value.byteLength;
+      logPush(`Received ${value.byteLength} bytes, total: ${received}`);
+      if(received >= OK_THRESHOLD_BYTES && !ok) {
+        ok = true;
+        await reader.cancel();
+        logPush("Early complete: Not detected ✅");
+        status.textContent = "Not detected ✅";
+        clearTimeout(timeoutId);
+        return;
+      }
+    }
+
+    if(!ok) {
+      logPush("Stream complete but data too small: Possibly detected ⚠️");
+      status.textContent = "Possibly detected ⚠️";
+    }
+  } catch(e) {
+    clearTimeout(timeoutId);
+    if(e.name === "AbortError") {
+      logPush("Timeout: Detected❗️");
+      status.textContent = "Detected❗️";
+    } else {
+      logPush("Error: " + e);
+      status.textContent = "Error ⚠️";
+    }
+  }
+}
+
+startBtn.onclick = () => {
+  const url = urlInput.value.trim();
+  if(url) checkDPI(url);
+  else alert("Enter a valid URL");
+};
+</script>
+</body>
+</html>

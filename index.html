@@ -182,17 +182,70 @@
   }
 </style>
 
+  <!-- --- Всплывающая подсказка --- -->
+<style>
+.cors-tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+  border-bottom: 1px dotted #666;
+}
+
+.cors-tooltip .tooltip-text {
+  visibility: hidden;
+  width: 300px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -150px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.8em;
+  line-height: 1.4;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.cors-tooltip .tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.cors-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
+
   <!-- --- Панель с инструкцией работы DPI --- -->
   <div class="panel" id="instruction">
     <b>Как работает DPI Checker:</b><br>
     1. Введите любой URL в поле. (Файл или ресурс должен быть хотя бы ~16–20 KB, лучше ≥64 KB)<br>
-    <b>ВАЖНО:</b> Сервер <u>целевого сайта</u> (куда делается запрос) должен быть настроен с <code>Access-Control-Allow-Origin: *</code><br>
-  <small>💡 <b>Как проверить поддержку CORS:</b><br>
-  1. Откройте DevTools (F12) → Вкладка Network<br>
-  2. Введите URL ниже и нажмите "Проверить"<br>
-  3. Найдите запрос в списке → посмотрите Response Headers<br>
-  4. Должен быть заголовок <code>Access-Control-Allow-Origin</code></small><br>
-  <small>📌 <b>Примечание:</b> Это настройка на стороне удаленного сервера, а не вашего браузера или провайдера</small><br>
+      <b>ВАЖНО:</b> Сервер <u>целевого сайта</u> (куда делается запрос) должен быть настроен с 
+  <span class="cors-tooltip">
+    <code>Access-Control-Allow-Origin: *</code>
+    <span class="tooltip-text">
+      <b>Как проверить поддержку CORS:</b><br>
+      1. Откройте DevTools (F12) → Вкладка Network<br>
+      2. Введите URL и нажмите "Проверить"<br>
+      3. Найдите запрос в списке → посмотрите Response Headers<br>
+      4. Должен быть заголовок <code>Access-Control-Allow-Origin</code><br>
+      <br>
+      📌 <i>Это настройка на стороне удаленного сервера</i>
+    </span>
+  </span>
+  <br>
     <i>Пример: вставьте 
   <span class="example-link-box" data-url="https://oracle.sfx.ovh/10M.bin">
     https://oracle.sfx.ovh/10M.bin

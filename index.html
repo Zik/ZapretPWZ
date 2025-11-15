@@ -193,33 +193,34 @@
 
 .cors-tooltip .tooltip-text {
   visibility: hidden;
-  width: 300px;
+  width: 320px;
   background-color: #333;
   color: #fff;
   text-align: left;
   border-radius: 6px;
-  padding: 10px;
+  padding: 12px;
   position: absolute;
-  z-index: 1;
-  bottom: 125%;
+  z-index: 1000;
+  top: 100%;
   left: 50%;
-  margin-left: -150px;
+  transform: translateX(-50%);
+  margin-top: 8px;
   opacity: 0;
   transition: opacity 0.3s;
   font-size: 0.8em;
   line-height: 1.4;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
 .cors-tooltip .tooltip-text::after {
   content: "";
   position: absolute;
-  top: 100%;
+  bottom: 100%;
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: #333 transparent transparent transparent;
+  border-color: transparent transparent #333 transparent;
 }
 
 .cors-tooltip:hover .tooltip-text {

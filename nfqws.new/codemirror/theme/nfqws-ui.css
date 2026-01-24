@@ -1,0 +1,154 @@
+/* === Палитра цветов (Можно менять, удобно в VScode) === */
+:root{
+  --nfqws-comment:   #7a8a9a; /* комментарии # ... */
+  --nfqws-string:    #f58012; /* "строки" (то что в кавычках) */
+  --nfqws-variable:  #198afc; /* $VAR (плюс $VAR в строках) */
+  --nfqws-number:    #f2c97d; /* числа и диапазоны портов */
+  --nfqws-keyword:   #d9ff00; /* --опции (плюс --new в строках) */
+  --nfqws-def:       #dfe6ee; /* VAR= (левая часть до =) */
+  --nfqws-operator:  #ff5d11; /* операторы/символы (= , :) */
+  --nfqws-error:     #ff6b6b; /* ошибки (если будут) */
+}
+
+/* === Токены === */
+
+/* # комментарии */
+.textarea-container .cm-comment{
+  color: var(--nfqws-comment) !important;
+  font-style: italic;
+}
+
+/* "строки" (то что в кавычках) */
+.textarea-container .cm-string{
+  color: var(--nfqws-string) !important;
+}
+
+/* $VAR (плюс $VAR в строках) */
+.textarea-container .cm-variable-2,
+.textarea-container .cm-variable-3{
+  color: var(--nfqws-variable) !important;
+  font-weight: 600;
+}
+
+/* числа: 80, 443, 1024:65535 */
+.textarea-container .cm-number{
+  color: var(--nfqws-number) !important;
+  font-weight: 600;
+}
+
+/* --опции (плюс --new в строках) */
+.textarea-container .cm-keyword{
+  color: var(--nfqws-keyword) !important;
+  font-weight: 600;
+}
+
+/* VAR= (левая часть до =) */
+.textarea-container .cm-def{
+  color: var(--nfqws-def) !important;
+  font-weight: 700;
+}
+
+/* Операторы/символы (= , :) */
+.textarea-container .cm-operator{
+  color: var(--nfqws-operator) !important;
+}
+
+/* Ошибки если будут */
+.textarea-container .cm-error{
+  color: var(--nfqws-error) !important;
+}
+
+/* ===== CodeMirror Simple Scrollbars — тонкие и контрастные ===== */
+/* Общая толщина */
+.textarea-container .CodeMirror-simplescroll-horizontal,
+.textarea-container .CodeMirror-simplescroll-vertical{
+  background: transparent !important;     /* чтобы не было “плашки” */
+}
+
+/* Трек (полоса) */
+.textarea-container .CodeMirror-simplescroll-horizontal div,
+.textarea-container .CodeMirror-simplescroll-vertical div{
+  background: color-mix(in srgb, var(--color-text) 18%, transparent) !important; /* трек */
+  border-radius: 999px !important;
+}
+
+/* Ползунок (slider) */
+.textarea-container .CodeMirror-simplescroll-horizontal .CodeMirror-simplescroll-slider,
+.textarea-container .CodeMirror-simplescroll-vertical .CodeMirror-simplescroll-slider{
+  background: color-mix(in srgb, var(--color-accent) 55%, transparent) !important; /* ползунок */
+  border-radius: 999px !important;
+}
+
+/* Тонкая вертикальная */
+.textarea-container .CodeMirror-simplescroll-vertical{
+  width: 8px !important;                 /* было толсто — делаем тоньше */
+}
+.textarea-container .CodeMirror-simplescroll-vertical div{
+  width: 6px !important;
+  margin: 1px !important;
+}
+
+/* Тонкая горизонтальная */
+.textarea-container .CodeMirror-simplescroll-horizontal{
+  height: 8px !important;
+}
+.textarea-container .CodeMirror-simplescroll-horizontal div{
+  height: 6px !important;
+  margin: 1px !important;
+}
+
+/* При наведении — чуть заметнее, но не толще */
+.textarea-container .CodeMirror-simplescroll-vertical:hover .CodeMirror-simplescroll-slider,
+.textarea-container .CodeMirror-simplescroll-horizontal:hover .CodeMirror-simplescroll-slider{
+  background: color-mix(in srgb, var(--color-accent) 75%, transparent) !important;
+}
+/* убрать "уголок" (точку/квадратик) на пересечении скроллов */
+.textarea-container .CodeMirror-scrollbar-filler,
+.textarea-container .CodeMirror-gutter-filler{
+  display: none !important;
+  background: transparent !important;
+}
+
+/* === Скроллбары: по умолчанию скрыты === */
+.textarea-container .CodeMirror-simplescroll-horizontal,
+.textarea-container .CodeMirror-simplescroll-vertical{
+  opacity: 0;
+  pointer-events: none; /* чтобы не мешали кликам по тексту */
+  transition: opacity .18s ease-in-out;
+}
+
+/* === Показаны, когда включили класс === */
+.textarea-container .CodeMirror.cm-scrollbars-show .CodeMirror-simplescroll-horizontal,
+.textarea-container .CodeMirror.cm-scrollbars-show .CodeMirror-simplescroll-vertical{
+  opacity: 1;
+  pointer-events: auto; /* можно тащить ползунок */
+}
+
+/* === Hot zones (невидимые зоны у края, чтобы поймать hover) === */
+.textarea-container .CodeMirror .cm-scroll-hotzone{
+  position: absolute;
+  z-index: 20;
+  background: transparent;
+}
+
+/* правая зона */
+.textarea-container .CodeMirror .cm-scroll-hotzone.v{
+  top: 0;
+  right: 0;
+  width: 14px;   /* чувствительность справа */
+  height: 100%;
+}
+
+/* нижняя зона */
+.textarea-container .CodeMirror .cm-scroll-hotzone.h{
+  left: 0;
+  bottom: 0;
+  height: 14px;  /* чувствительность снизу */
+  width: 100%;
+}
+/* когда скроллбары показаны — hotzone не мешает перетаскивать ползунок */
+.textarea-container .CodeMirror.cm-scrollbars-show .cm-scroll-hotzone{
+  pointer-events: none !important;
+}
+
+
